@@ -23,9 +23,13 @@ namespace CompressionService.Compressors.Decorators
             {
                 throw new ArgumentNullException(nameof(decompressionData));
             }
-            else if (!inputValidator.ContainsOnlyLowercaseLatin(decompressionData))
+            else if (!inputValidator.IsAllLettersLowercase(decompressionData))
             {
-                throw new ArgumentException($"{nameof(decompressionData)} has invalid characters");
+                throw new ArgumentException($"{nameof(decompressionData)} has upper case characters");
+            }
+            else if (!inputValidator.IsAllLatinLetters(decompressionData))
+            {
+                throw new ArgumentException($"{nameof(decompressionData)} Ñontains more than just Latin letters.");
             }
 
             return compressor.Compress(decompressionData);

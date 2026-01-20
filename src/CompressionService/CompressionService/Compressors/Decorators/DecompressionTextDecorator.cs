@@ -1,4 +1,5 @@
 using CompressionService.Compressors.Interfaces;
+using CompressionService.Compressors.Validators;
 
 namespace CompressionService.Compressors.Decorators
 {
@@ -6,10 +7,14 @@ namespace CompressionService.Compressors.Decorators
     {
         private IDecompressor<string, string> decompressor;
 
+        private InputValidator inputValidator;
+
         public DecompressionTextDecorator(
             IDecompressor<string, string> decompressor)
         {
             this.decompressor = decompressor;
+
+            inputValidator = new();
         }
 
         public override string Decompress(string compressionData)
@@ -17,6 +22,14 @@ namespace CompressionService.Compressors.Decorators
             if (string.IsNullOrEmpty(compressionData))
             {
                 throw new ArgumentNullException(nameof(compressionData));
+            }
+            else if (!inputValidator.IsAllLettersLowercase(compressionData))
+            {
+                throw new ArgumentException($"{nameof(compressionData)} has upper case characters");
+            }
+            else if (!inputValidator.IsLowercaseLatinOrDigits(compressionData))
+            {
+                throw new ArgumentException($"{nameof(compressionData)} Ñontains more than just Latin letters and digits.");
             }
 
             return decompressor.Decompress(compressionData);

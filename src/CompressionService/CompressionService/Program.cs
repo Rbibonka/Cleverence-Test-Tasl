@@ -13,10 +13,12 @@ ICompressionFacade<string, string> compressionTextFacade
     = new CompressionFacade<string, string>(compressionTextDecorator, decompressionTextDecorator);
 
 string source = "aaabbcccdde";
+Console.WriteLine($"Source: {source}");
+
 
 string compressed = compressionTextFacade.Compress(source);
-string decompressed = compressionTextFacade.Decompress(compressed);
-
-Console.WriteLine($"Source: {source}");
 Console.WriteLine($"Compressed: {compressed}");
+
+
+string decompressed = compressionTextFacade.Decompress(compressed);
 Console.WriteLine($"Decompressed: {decompressed}");
