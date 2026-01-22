@@ -4,32 +4,37 @@ namespace ServerSimulated.Servers
     {
         private static int count = 0;
 
-        private static readonly ReaderWriterLockSlim rwLock =
-            new ReaderWriterLockSlim();
+        private static readonly ReaderWriterLockSlim readerWriterLockSlim =
+            new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
         public static int GetCount()
         {
-            rwLock.EnterReadLock();
+            readerWriterLockSlim.EnterReadLock();
             try
             {
+                Console.WriteLine($"[Thread {Thread.CurrentThread.ManagedThreadId}] READ  -> {count}");
+
                 return count;
             }
             finally
             {
-                rwLock.ExitReadLock();
+                readerWriterLockSlim.ExitReadLock();
             }
         }
 
         public static void AddToCount(int value)
         {
-            rwLock.EnterWriteLock();
+            readerWriterLockSlim.EnterWriteLock();
+
             try
             {
                 count += value;
+
+                Console.WriteLine($"[Thread {Thread.CurrentThread.ManagedThreadId}] WRITE +1");
             }
             finally
             {
-                rwLock.ExitWriteLock();
+                readerWriterLockSlim.ExitWriteLock();
             }
         }
     }
