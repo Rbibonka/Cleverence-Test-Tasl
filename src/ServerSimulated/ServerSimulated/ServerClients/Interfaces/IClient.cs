@@ -1,7 +1,8 @@
 namespace ServerSimulated.ServerUsers.Interfaces
 {
-    public interface IReader
+    public interface IClient
     {
         void Read();
+        void Write();
     }
 }

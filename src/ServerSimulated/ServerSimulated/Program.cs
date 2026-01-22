@@ -1,9 +1,6 @@
-using ServerSimulated.Servers;
-using ServerSimulated.ServerUsers;
+using ServerSimulated.Configs;
+using ServerSimulated.ServerClients;
 
-for (int i = 1; i <= 10; i++)
-{
-    new User(i).Start();
-}
+ClientsLifeCycle clientsLifeCycle = new(Config.ClientsCount);
 
-Console.WriteLine("Все пользователи завершили работу." + Server.GetCount());
+clientsLifeCycle.StartLifeCycle();
